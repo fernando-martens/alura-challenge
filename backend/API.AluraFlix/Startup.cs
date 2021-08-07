@@ -1,7 +1,5 @@
-using API.AluraFlix.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -22,9 +20,8 @@ namespace API.AluraFlix
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<VideoContext>(opts => opts.UseMySQL(Configuration.GetConnectionString("Default")));
-            services.AddDbContext<CategoryContext>(opts => opts.UseMySQL(Configuration.GetConnectionString("Default")));
-
+            //services.AddDbContext<ApplicationContext>(opts => opts.UseMySQL(Configuration.GetConnectionString("Default")));
+            //services.AddDbContext<CategoryContext>(opts => opts.UseMySQL(Configuration.GetConnectionString("Default")));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

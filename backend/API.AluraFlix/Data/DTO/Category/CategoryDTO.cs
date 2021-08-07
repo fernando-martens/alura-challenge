@@ -1,14 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Api.Challenge.Alura.Models
 {
     public class CategoryDTO
     {
-        [Key]
+        public CategoryDTO(Category category)
+        {
+            Id = category.Id;
+            Titulo = category.Titulo;
+            Color = category.Color;
+        }
+
+        public CategoryDTO() { }
+
+       [Key]
         [Required] 
         public int Id { get; set; }
 

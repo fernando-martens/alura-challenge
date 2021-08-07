@@ -1,13 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Api.Challenge.Alura.Models;
+using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace API.AluraFlix.Data.DTO
 {
     public class VideoDTO
     {
+        public VideoDTO(Video video)
+        {
+            Id = video.Id;
+            Titulo = video.Titulo;
+            CategoriaId = video.CategoriaId;
+            Descricao = video.Descricao;
+            Url = video.Url;
+        }
+
+        public VideoDTO() { }
+
         [Key]
         [Required]
         public int Id { get; set; }
@@ -16,7 +25,7 @@ namespace API.AluraFlix.Data.DTO
         [MaxLength(180)]
         public String Titulo { get; set; }
 
-        public int CategoriaId { get; set; }
+        public int? CategoriaId { get; set; }
 
         [Required]
         [MaxLength(180)]

@@ -1,77 +1,64 @@
-﻿using Api.Challenge.Alura.Models;
-using API.AluraFlix.Data;
+﻿using API.AluraFlix.Business;
 using API.AluraFlix.Data.DTO;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Api.Challenge.Alura.Controllers
 {
     [ApiController]
     [Route("videos")]
-    public class VideoController : ControllerBase
+    public class VideoController : ControllerBase 
     {
-
-        private VideoContext _context;
-        private IMapper _mapper;
-
-        public VideoController(VideoContext context, IMapper mapper) {
-            _context = context;
-            _mapper = mapper;
+        public class DTOList
+        {
+            public string filter { get; set; }
+            public int page { get; set; }
         }
+
 
         [HttpPost]
         public IActionResult AddVideo([FromBody] VideoDTO videoDTO)
         {
-            Video video = _mapper.Map<Video>(videoDTO);
-            if (video.CategoriaId == null)
-                video.CategoriaId = 1;
-
-            _context.Videos.Add(video);
-            _context.SaveChanges();
-            return Ok();
+            bool ok = VideosBusiness.InsertBS(videoDTO);
+            if (ok) return Ok();
+            else return NotFound();
         }
 
 
         [HttpGet]
-        public ActionResult GetVideos([FromQuery] string search = null) {
-            if (search != null)
-            {
-                List<Video> videos = _context.Videos.ToList<Video>();
-                return Ok(videos.Where(videos => videos.Titulo == search));
-            }
-            return Ok(_context.Videos) ;
+        public ActionResult GetVideos([FromQuery] DTOList dto) {
+            List<VideoDTO> videos = VideosBusiness.ListBS(dto.filter, dto.page);
+            return Ok(videos);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetVideo([FromRoute] int id)
         {
-            Video video = _context.Videos.Find(id);
-            return Ok(video);
+
+            VideoDTO videoDTO = VideosBusiness.GetOneBS(id);
+            if (videoDTO == null)
+                return NotFound();
+
+            return Ok(videoDTO);
         }
 
 
         [HttpPatch]
         public IActionResult UpdateVideo([FromBody] VideoDTO videoDTO)
         {
-            Video video = _context.Videos.Find(videoDTO.Id);
-            if (video == null) return NotFound();
-
-            _mapper.Map(videoDTO, video);
-            _context.SaveChanges();
-            return Ok(video);
+            bool ok = VideosBusiness.UpdateBS(videoDTO);
+            if (ok) return Ok();
+            else return NotFound();
         }
 
         [HttpDelete]
         [Route("{id}")]
         public IActionResult DeleteVideo(int id)
         {
-            Video video = _context.Videos.Find(id);
-            _context.Videos.Remove(video);
-            _context.SaveChanges();
-            return NoContent();
+
+            bool ok = VideosBusiness.DeleteBS(id);
+            if (ok) return NoContent();
+            else return NotFound();
         }
 
     }
