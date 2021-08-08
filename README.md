@@ -1,2 +1,4 @@
 # alura-challenge-back-end
-Desafio de back-end desenvolvido em C# na plataforma .NET
+
+Back-end desenvolvido em C# na plataforma .NET
+Front-end desenvolvido em JavaScript com o auxílio da biblioteca React
